@@ -14,12 +14,8 @@ class AppDelegate
   def initialize_main_controller
     self.window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
-    window.setRootViewController(photo_library_controller)
+    window.setRootViewController(ViewController.alloc.init)
 
     window.makeKeyAndVisible
-  end
-
-  def photo_library_controller
-    PhotoLibraryController.alloc.init
   end
 end
