@@ -28,7 +28,7 @@ class Motion
 
       def listen_to_asset_library
         self.observer = notification_center.addObserver(
-          WeakRef.new(self),
+          self,
           selector: 'asset_library_did_change:',
           name: ALAssetsLibraryChangedNotification,
           object: nil)
