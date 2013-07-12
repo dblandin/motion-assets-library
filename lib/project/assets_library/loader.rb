@@ -43,7 +43,7 @@ class Motion
       end
 
       def album_block
-        lambda { |group, stop| group.enumerateAssetsUsingBlock(asset_block) if group }
+        lambda { |group, stop| group.enumerateAssetsWithOptions(asset_enumeration_options, usingBlock: asset_block) if group }
       end
 
       def album_failure_block
@@ -78,6 +78,10 @@ class Motion
 
       def notification_center
         NSNotificationCenter.defaultCenter
+      end
+
+      def asset_enumeration_options
+        NSEnumerationReverse
       end
     end
   end
