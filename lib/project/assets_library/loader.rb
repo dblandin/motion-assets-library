@@ -65,7 +65,9 @@ class Motion
           raise DelegateMethodUnimplemented, 'did_load_assets: must be implemented'
         end
 
-        delegate.did_load_assets(assets)
+        Dispatch::Queue.main.async do
+          delegate.did_load_assets(assets)
+        end
       end
 
       def add_asset(asset)
