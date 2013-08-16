@@ -1,7 +1,7 @@
 class Motion
   class AssetsLibrary
     class Loader
-      attr_accessor :delegate, :observer
+      attr_accessor :delegate
 
       def initialize
         listen_to_asset_library
@@ -27,7 +27,7 @@ class Motion
       private
 
       def listen_to_asset_library
-        self.observer = notification_center.addObserver(
+        notification_center.addObserver(
           self,
           selector: 'asset_library_did_change:',
           name: ALAssetsLibraryChangedNotification,
@@ -39,7 +39,7 @@ class Motion
       end
 
       def dealloc
-        notification_center.removeObserver(observer)
+        notification_center.removeObserver(self)
       end
 
       def album_block

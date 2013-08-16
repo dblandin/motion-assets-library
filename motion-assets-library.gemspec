@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |spec|
   spec.name          = 'motion-assets-library'
-  spec.version       = '1.0.3'
+  spec.version       = '1.0.4'
   spec.authors       = ['Devon Blandin']
   spec.email         = ['dblandin@gmail.com']
   spec.description   = %q{Easy access to iOS media assets via ALAssetsLibrary}
