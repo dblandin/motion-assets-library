@@ -5,6 +5,8 @@ Access iOS media via ALAssetsLibrary
 [![Gem Version](https://badge.fury.io/rb/motion-assets-library.png)](http://badge.fury.io/rb/motion-assets-library)
 [![Code Climate](https://codeclimate.com/github/dblandin/motion-assets-library.png)](https://codeclimate.com/github/dblandin/motion-assets-library)
 
+motion-assets-library's initial development was sponsored by [dscout](https://dscout.com). Many thanks to them!
+
 ## Usage
 
 Instantiate a loader and set a delegate:
@@ -46,3 +48,7 @@ Or install it yourself as:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Thanks
+
+[dscout](https://dscout.com) - for their sponsorship
