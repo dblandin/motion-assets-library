@@ -2,6 +2,9 @@
 
 Access iOS media via ALAssetsLibrary
 
+[![Gem Version](https://badge.fury.io/rb/motion-assets-library.png)](http://badge.fury.io/rb/motion-assets-library)
+[![Code Climate](https://codeclimate.com/github/dblandin/motion-assets-library.png)](https://codeclimate.com/github/dblandin/motion-assets-library)
+
 ## Usage
 
 Instantiate a loader and set a delegate:
