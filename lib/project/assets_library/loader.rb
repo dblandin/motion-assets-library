@@ -47,7 +47,7 @@ class Motion
       end
 
       def album_failure_block
-        lambda { |error| p "Error: #{error[0].description}" }
+        lambda { |error| p "Error: #{error.localizedDescription}" }
       end
 
       def asset_block
