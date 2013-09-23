@@ -36,7 +36,21 @@ class Motion
       def asset_loader
         @_asset_loader ||= AssetsLibrary::Loader.new.tap do |loader|
           loader.delegate = WeakRef.new(self)
+          loader.denied denied_callback
         end
+      end
+
+      def denied_callback
+        -> { show_alert('Access to the Photo Library has been denied') }
+      end
+
+      def show_alert(message)
+        UIAlertView.alloc.initWithTitle(
+          nil,
+          message:           message,
+          delegate:          nil,
+          cancelButtonTitle: 'Ok',
+          otherButtonTitles: nil).show
       end
 
       def did_load_assets(asset)

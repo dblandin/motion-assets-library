@@ -14,6 +14,22 @@ class Motion
           failureBlock: album_failure_block)
       end
 
+      def denied(callback)
+        @denied_callback = callback
+      end
+
+      def denied_callback
+        @denied_callback ||= -> { }
+      end
+
+      def access_denied?
+        [ALAuthorizationStatusDenied, ALAuthorizationStatusRestricted].include? authorization_status
+      end
+
+      def authorization_status
+        ALAssetsLibrary.authorizationStatus
+      end
+
       def reset_assets
         @_assets = []
 
@@ -47,7 +63,11 @@ class Motion
       end
 
       def album_failure_block
-        lambda { |error| p "Error: #{error.localizedDescription}" }
+        lambda do |error|
+          p "Error: #{error.localizedDescription}"
+
+          denied_callback.call if access_denied?
+        end
       end
 
       def asset_block
