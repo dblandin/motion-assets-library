@@ -21,10 +21,25 @@ Implement the delegate method:
 
 ``` ruby
   def did_load_assets(assets)
-    self.assets = assets
+    @assets = assets
 
     colletion_view.reloadData
   end
+```
+
+### Handling denied access to the Photo Library
+
+Set a denied callback:
+
+``` ruby
+denied_callback = -> do
+  show_alert('Access to the Photo Library has been denied. Please update your privacy settings')
+end
+
+Motion::AssetsLibrary::Loader.new.tap do |loader|
+  loader.delegate = WeakRef.new(self)
+  loader.denied denied_callback
+end
 ```
 
 ## Setup
