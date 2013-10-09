@@ -17,6 +17,7 @@ class Motion
 
       def save(image, to_album: album_name, &block)
         @success_callback = block
+        @album_found      = false
 
         if access_denied?
           denied_callback.call if denied_callback
@@ -43,24 +44,28 @@ class Motion
         })
       end
 
+      def album_found?
+        !!@album_found
+      end
+
       def add_asset_url(asset_url, to_album: album_name)
-        album_found = false
-
         assets_library.enumerateGroupsWithTypes(ALAssetsGroupAlbum, usingBlock: lambda { |group, stop|
-          if group && album_name === group.valueForProperty(ALAssetsGroupPropertyName)
-            album_found = stop = true
+          if group
+            if album_name === group.valueForProperty(ALAssetsGroupPropertyName)
+              @album_found = true
 
-            assets_library.assetForURL(asset_url, resultBlock: lambda { |asset|
-              group.addAsset(asset)
-            }, failureBlock: nil)
-          end
-
-          if album_found == false
-            assets_library.addAssetsGroupAlbumWithName(album_name, resultBlock: lambda { |group|
               assets_library.assetForURL(asset_url, resultBlock: lambda { |asset|
                 group.addAsset(asset)
               }, failureBlock: nil)
-            }, failureBlock: nil)
+            end
+          else
+            unless album_found?
+              assets_library.addAssetsGroupAlbumWithName(album_name, resultBlock: lambda { |new_group|
+                assets_library.assetForURL(asset_url, resultBlock: lambda { |asset|
+                  new_group.addAsset(asset)
+                }, failureBlock: nil)
+              }, failureBlock: nil)
+            end
           end
         }, failureBlock: nil)
       end
