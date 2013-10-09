@@ -3,10 +3,6 @@ class Motion
     class Loader
       attr_accessor :delegate
 
-      def initialize
-        listen_to_asset_library
-      end
-
       def load_assets
         assets_library.enumerateGroupsWithTypes(
           ALAssetsGroupSavedPhotos,
@@ -31,32 +27,16 @@ class Motion
       end
 
       def reset_assets
-        @_assets = []
+        @assets = []
 
         load_assets
       end
 
       def assets
-        @_assets ||= []
+        @assets ||= []
       end
 
       private
-
-      def listen_to_asset_library
-        notification_center.addObserver(
-          self,
-          selector: 'asset_library_did_change:',
-          name: ALAssetsLibraryChangedNotification,
-          object: nil)
-      end
-
-      def asset_library_did_change(notification)
-        reset_assets
-      end
-
-      def dealloc
-        notification_center.removeObserver(self)
-      end
 
       def album_block
         lambda { |group, stop| group.enumerateAssetsWithOptions(asset_enumeration_options, usingBlock: asset_block) if group }
@@ -95,11 +75,7 @@ class Motion
       end
 
       def assets_library
-        @_assets_library ||= ALAssetsLibrary.alloc.init
-      end
-
-      def notification_center
-        NSNotificationCenter.defaultCenter
+        @assets_library ||= ALAssetsLibrary.alloc.init
       end
 
       def asset_enumeration_options
