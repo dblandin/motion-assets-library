@@ -26,22 +26,51 @@ class Motion
         end
       end
 
+      def save_image_data(image_data, &block)
+        save_image_data(image_data, to_album: nil, &block)
+      end
+
+      def save_image_data(image_data, to_album: album_name, &block)
+        @success_callback = block
+        @album_found      = false
+
+        if access_denied?
+          denied_callback.call if denied_callback
+        else
+          do_save_data(image_data, album: album_name)
+        end
+      end
+
       private
 
       def do_save(image, album: album_name)
         asset_url = nil
 
-        asset_url = assets_library.writeImageToSavedPhotosAlbum(image.CGImage,
+        asset_url = assets_library.writeImageToSavedPhotosAlbum(
+          image.CGImage,
           orientation: image.imageOrientation,
-          completionBlock: lambda { |asset_url, error|
-            if error
-              failure_callback.call(error) if failure_callback
-            else
-              add_asset_url(asset_url, to_album: album_name) if album_name
+          completionBlock: write_image_block(album_name))
+      end
 
-              success_callback.call(asset_url) if success_callback
-            end
-        })
+      def do_save_data(image_data, album: album_name)
+        asset_url = nil
+
+        asset_url = assets_library.writeImageDataToSavedPhotosAlbum(
+          image_data,
+          metadata: nil,
+          completionBlock: write_image_block(album_name))
+      end
+
+      def write_image_block(album_name)
+        lambda { |asset_url, error|
+          if error
+            failure_callback.call(error) if failure_callback
+          else
+            add_asset_url(asset_url, to_album: album_name) if album_name
+
+            success_callback.call(asset_url) if success_callback
+          end
+        }
       end
 
       def album_found?
